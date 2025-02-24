@@ -132,7 +132,7 @@ class Q1Bot(ForecastBot):
         return response
 
     async def _call_serper_searcher(self, serper_api_key: str, question: str) -> str:
-        researchAgent = ResearchAgent(serper_api_key=serper_api_key, breadth=2)
+        researchAgent = ResearchAgent(serper_api_key=serper_api_key, breadth=5)
         logger.info(f"Questions: {question}")
         response = await researchAgent.research(question=question)
         logger.info(f"Response: {response}")
