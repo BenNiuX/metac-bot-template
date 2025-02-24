@@ -421,7 +421,7 @@ if __name__ == "__main__":
         "--mode",
         type=str,
         choices=["tournament", "quarterly_cup", "test_questions"],
-        default="test_questions",#"tournament",
+        default="tournament",
         help="Specify the run mode (default: tournament)",
     )
     args = parser.parse_args()
