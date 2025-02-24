@@ -76,13 +76,13 @@ class Q1Bot(ForecastBot):
     )
     _concurrency_limiter = asyncio.Semaphore(_max_concurrent_questions)
     _rate_limiter = RefreshingBucketRateLimiter(
-        capacity=2,
+        capacity=1,
         refresh_rate=1,
     )
     async def run_research(self, question: MetaculusQuestion) -> str:
 
         # Allows 1 request per second on average with a burst of 2 requests initially. Set this as a class variable
-        # await self._rate_limiter.wait_till_able_to_acquire_resources(1) # 1 because it's consuming 1 request (use more if you are adding a token limit)
+        await self._rate_limiter.wait_till_able_to_acquire_resources(1) # 1 because it's consuming 1 request (use more if you are adding a token limit)
         logger.debug(f"Ques: {question}")
         async with self._concurrency_limiter:
             research = ""
@@ -286,6 +286,7 @@ class Q1Bot(ForecastBot):
             Option_B: Probability_B
             ...
             Option_N: Probability_N
+            Following the format: "Probability: ZZ%", 0-100. No other extra words or format.
             """
         )
         reasoning = await self._get_final_decision_llm().async_completions([dict(role="user", content=prompt)])
@@ -461,9 +462,11 @@ if __name__ == "__main__":
     elif run_mode == "test_questions":
         # Example questions are a good way to test the bot's performance on a single question
         EXAMPLE_QUESTIONS = [
-            "https://www.metaculus.com/questions/578/human-extinction-by-2100/",  # Human Extinction - Binary
-            "https://www.metaculus.com/questions/14333/age-of-oldest-human-as-of-2100/",  # Age of Oldest Human - Numeric
-            "https://www.metaculus.com/questions/22427/number-of-new-leading-ai-labs/",  # Number of New Leading AI Labs - Multiple Choice
+            "https://www.metaculus.com/questions/35431/which-country-will-the-winner-of-the-2025-tokyo-marathon-be-from/",
+            "https://www.metaculus.com/questions/35433/how-many-artists-in-the-top-10-of-the-billboard-artist-100-in-the-last-week-of-march-will-be-new-to-the-top-10-that-week/",
+            # "https://www.metaculus.com/questions/578/human-extinction-by-2100/",  # Human Extinction - Binary
+            # "https://www.metaculus.com/questions/14333/age-of-oldest-human-as-of-2100/",  # Age of Oldest Human - Numeric
+            # "https://www.metaculus.com/questions/22427/number-of-new-leading-ai-labs/",  # Number of New Leading AI Labs - Multiple Choice
         ]
         customized_bot.skip_previously_forecasted_questions = False
         questions = [
