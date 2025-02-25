@@ -287,6 +287,7 @@ class Q1Bot(ForecastBot):
             ...
             Option_N: Probability_N
             Following the format: "Probability: ZZ%", 0-100. No other extra words or format.
+            Keep the options order and spell as it is, do not change and update at all.
             """
         )
         reasoning = await self._get_final_decision_llm().async_completions([dict(role="user", content=prompt)])
@@ -462,13 +463,17 @@ if __name__ == "__main__":
     elif run_mode == "test_questions":
         # Example questions are a good way to test the bot's performance on a single question
         EXAMPLE_QUESTIONS = [
-            "https://www.metaculus.com/questions/35431/which-country-will-the-winner-of-the-2025-tokyo-marathon-be-from/",
-            "https://www.metaculus.com/questions/35433/how-many-artists-in-the-top-10-of-the-billboard-artist-100-in-the-last-week-of-march-will-be-new-to-the-top-10-that-week/",
+            # "https://www.metaculus.com/questions/35441/how-many-oscars-will-wicked-win-in-2025/",
+            # "https://www.metaculus.com/questions/35444/how-many-movies-will-be-new-on-netflixs-top-10-movies-list-for-the-week-ending-march-2-2025/",
+            "https://www.metaculus.com/questions/35439/which-movie-will-win-the-2025-razzie-for-worst-remake-rip-off-or-sequel/",
+            # "https://www.metaculus.com/questions/35431/which-country-will-the-winner-of-the-2025-tokyo-marathon-be-from/",
+            # "https://www.metaculus.com/questions/35433/how-many-artists-in-the-top-10-of-the-billboard-artist-100-in-the-last-week-of-march-will-be-new-to-the-top-10-that-week/",
             # "https://www.metaculus.com/questions/578/human-extinction-by-2100/",  # Human Extinction - Binary
             # "https://www.metaculus.com/questions/14333/age-of-oldest-human-as-of-2100/",  # Age of Oldest Human - Numeric
             # "https://www.metaculus.com/questions/22427/number-of-new-leading-ai-labs/",  # Number of New Leading AI Labs - Multiple Choice
         ]
         customized_bot.skip_previously_forecasted_questions = False
+        customized_bot.publish_reports_to_metaculus = False
         questions = [
             MetaculusApi.get_question_by_url(question_url)
             for question_url in EXAMPLE_QUESTIONS
