@@ -454,7 +454,7 @@ if __name__ == "__main__":
     elif run_mode == "quarterly_cup":
         # The quarterly cup is a good way to test the bot's performance on regularly open questions. You can also use AXC_2025_TOURNAMENT_ID = 32564
         Q1_2025_QUARTERLY_CUP_ID = 32630
-        customized_bot.skip_previously_forecasted_questions = False
+        # customized_bot.skip_previously_forecasted_questions = False
         forecast_reports = asyncio.run(
             customized_bot.forecast_on_tournament(
                 Q1_2025_QUARTERLY_CUP_ID, return_exceptions=True
@@ -463,9 +463,10 @@ if __name__ == "__main__":
     elif run_mode == "test_questions":
         # Example questions are a good way to test the bot's performance on a single question
         EXAMPLE_QUESTIONS = [
+            "https://www.metaculus.com/questions/31427/",
             # "https://www.metaculus.com/questions/35441/how-many-oscars-will-wicked-win-in-2025/",
             # "https://www.metaculus.com/questions/35444/how-many-movies-will-be-new-on-netflixs-top-10-movies-list-for-the-week-ending-march-2-2025/",
-            "https://www.metaculus.com/questions/35439/which-movie-will-win-the-2025-razzie-for-worst-remake-rip-off-or-sequel/",
+            # "https://www.metaculus.com/questions/35439/which-movie-will-win-the-2025-razzie-for-worst-remake-rip-off-or-sequel/",
             # "https://www.metaculus.com/questions/35431/which-country-will-the-winner-of-the-2025-tokyo-marathon-be-from/",
             # "https://www.metaculus.com/questions/35433/how-many-artists-in-the-top-10-of-the-billboard-artist-100-in-the-last-week-of-march-will-be-new-to-the-top-10-that-week/",
             # "https://www.metaculus.com/questions/578/human-extinction-by-2100/",  # Human Extinction - Binary
