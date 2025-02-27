@@ -133,9 +133,9 @@ class Q1Bot(ForecastBot):
 
     async def _call_serper_searcher(self, serper_api_key: str, question: str) -> str:
         researchAgent = ResearchAgent(serper_api_key=serper_api_key, breadth=5)
-        logger.info(f"Questions: {question}")
+        logger.debug(f"Questions: {question}")
         response = await researchAgent.research(question=question)
-        logger.info(f"Response: {response}")
+        logger.debug(f"Response: {response}")
         return response
 
     async def _call_exa_smart_searcher(self, question: str) -> str:
@@ -288,6 +288,7 @@ class Q1Bot(ForecastBot):
             Option_N: Probability_N
             Following the format: "Probability: ZZ%", 0-100. No other extra words or format.
             Keep the options order and spell as it is, do not change and update at all.
+            Do not use "Option_A", "Option_B", etc. in the final answer. Use the option name directly.
             """
         )
         reasoning = await self._get_final_decision_llm().async_completions([dict(role="user", content=prompt)])
@@ -463,7 +464,8 @@ if __name__ == "__main__":
     elif run_mode == "test_questions":
         # Example questions are a good way to test the bot's performance on a single question
         EXAMPLE_QUESTIONS = [
-            "https://www.metaculus.com/questions/31427/",
+            "https://www.metaculus.com/questions/35462/how-many-incidents-of-unruly-passengers-will-the-faa-report-for-q1-2025/",
+            # "https://www.metaculus.com/questions/31427/",
             # "https://www.metaculus.com/questions/35441/how-many-oscars-will-wicked-win-in-2025/",
             # "https://www.metaculus.com/questions/35444/how-many-movies-will-be-new-on-netflixs-top-10-movies-list-for-the-week-ending-march-2-2025/",
             # "https://www.metaculus.com/questions/35439/which-movie-will-win-the-2025-razzie-for-worst-remake-rip-off-or-sequel/",
