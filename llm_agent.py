@@ -78,6 +78,8 @@ class OpenAIAgent(LLMAgent):
         self.async_client = openai.AsyncOpenAI(api_key=openai_api_key,
                                                base_url=base_url)
         self.system = [dict(role='system', content='You are an advanced AI system which has been finetuned to provide calibrated probabilistic forecasts under uncertainty, with your performance evaluated according to the Brier score.')]
+        self.extra_headers = {"Authorization": "Token " + self.agent_token,
+                              "Content-Type": "application/json"}
 
 
     def _completions(self, messages: List[Dict]) -> str:
@@ -89,7 +91,7 @@ class OpenAIAgent(LLMAgent):
             messages=messages,
             temperature=self.temperature,
             max_tokens=self.max_tokens,
-            extra_headers={"Authorization": "Token " + self.agent_token}
+            extra_headers=self.extra_headers
         )
         response = response.choices[0].message.content
         if self.show_ai_comm:
@@ -104,7 +106,7 @@ class OpenAIAgent(LLMAgent):
             messages=messages,
             temperature=self.temperature,
             max_tokens=self.max_tokens,
-            extra_headers={"Authorization": "Token " + self.agent_token}
+            extra_headers=self.extra_headers
         )
         response = response.choices[0].message.content
         if self.show_ai_comm:
@@ -120,7 +122,7 @@ class OpenAIAgent(LLMAgent):
             max_tokens=self.max_tokens,
             temperature=self.temperature,
             messages=messages,
-            extra_headers={"Authorization": "Token " + self.agent_token},
+            extra_headers=self.extra_headers,
             stream=True
         )
         ret = []
@@ -138,12 +140,16 @@ class AnthropicAgent(LLMAgent):
     def __init__(self, temperature: float = 0.0, max_tokens: int = 2048, model: str = "claude-3-haiku"):
         super().__init__(temperature, max_tokens)
         base_url = os.getenv("ANTHROPIC_BASE_URL")
-        self.client = Anthropic(api_key=os.getenv("METACULUS_TOKEN"),
+        anthropic_api_key = os.getenv("METACULUS_TOKEN")
+        self.client = Anthropic(api_key=anthropic_api_key,
                                 base_url=base_url)
-        self.async_client = AsyncAnthropic(api_key=os.getenv("METACULUS_TOKEN"),
+        self.async_client = AsyncAnthropic(api_key=anthropic_api_key,
                                            base_url=base_url)
         self.model = model
         self.agent_token = os.getenv("METACULUS_TOKEN")
+        self.extra_headers = {"Authorization": "Token " + self.agent_token,
+                              "Content-Type": "application/json",
+                              "anthropic-version": "2023-06-01"}
 
     def _completions(self, messages: List[Dict]) -> str:
         if self.show_ai_comm:
@@ -153,7 +159,7 @@ class AnthropicAgent(LLMAgent):
             max_tokens=self.max_tokens,
             temperature=self.temperature,
             messages=messages,
-            extra_headers={"Authorization": "Token " + self.agent_token}
+            extra_headers=self.extra_headers
         )
         response = response.content[0].text
         if self.show_ai_comm:
@@ -168,7 +174,7 @@ class AnthropicAgent(LLMAgent):
             max_tokens=self.max_tokens,
             temperature=self.temperature,
             messages=messages,
-            extra_headers={"Authorization": "Token " + self.agent_token}
+            extra_headers=self.extra_headers
         )
         response = response.content[0].text
         if self.show_ai_comm:
@@ -183,7 +189,7 @@ class AnthropicAgent(LLMAgent):
             max_tokens=self.max_tokens,
             temperature=self.temperature,
             messages=messages,
-            extra_headers={"Authorization": "Token " + self.agent_token},
+            extra_headers=self.extra_headers,
             # TODO: How to enable stream ?
             # stream=True
         )

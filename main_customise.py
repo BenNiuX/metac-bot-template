@@ -219,7 +219,7 @@ class Q1Bot(ForecastBot):
                 or background information which may be relevant. Check for over/underconfidence,
                 improper treatment of conjunctive or disjunctive conditions (only if applicable),
                 and other forecasting biases when reviewing your reasoning. Finally, aggregate all of your previous
-                reasoning and key factors that inform your final forecast.
+                reasoning and key factors that inform your final forecast. Only print summarised information to save tokens.
 
             You write your rationale remembering that good forecasters put extra weight on the status quo outcome since the world changes slowly most of the time.
 
@@ -275,7 +275,7 @@ class Q1Bot(ForecastBot):
                 or background information which may be relevant. Check for over/underconfidence,
                 improper treatment of conjunctive or disjunctive conditions (only if applicable),
                 and other forecasting biases when reviewing your reasoning. Finally, aggregate all of your previous
-                reasoning and key factors that inform your final forecast.
+                reasoning and key factors that inform your final forecast. Only print summarised information to save tokens.
 
             You write your rationale remembering that (1) good forecasters put extra
             weight on the status quo outcome since the world changes slowly most of the time,
@@ -344,6 +344,7 @@ class Q1Bot(ForecastBot):
             (e) A brief description of an unexpected scenario that results in a low outcome.
             (f) A brief description of an unexpected scenario that results in a high outcome.
 
+            Only print summarised information to save tokens.
             You remind yourself that good forecasters are humble and set wide 90/10 confidence intervals to account for unknown unknowns.
 
             The last thing you write is your final answer as:
@@ -464,7 +465,10 @@ if __name__ == "__main__":
     elif run_mode == "test_questions":
         # Example questions are a good way to test the bot's performance on a single question
         EXAMPLE_QUESTIONS = [
-            "https://www.metaculus.com/questions/35462/how-many-incidents-of-unruly-passengers-will-the-faa-report-for-q1-2025/",
+            "https://www.metaculus.com/questions/35898/what-will-the-ratio-of-the-price-of-1-bitcoin-to-1-troy-ounce-of-gold-be-on-march-30-2025/",
+            # "https://www.metaculus.com/questions/35896/what-will-the-warren-buffett-indicator-wilshire-5000-to-gdp-ratio-be-on-march-28-2025/",
+            # "https://www.metaculus.com/questions/35697"
+            # "https://www.metaculus.com/questions/35462/how-many-incidents-of-unruly-passengers-will-the-faa-report-for-q1-2025/",
             # "https://www.metaculus.com/questions/31427/",
             # "https://www.metaculus.com/questions/35441/how-many-oscars-will-wicked-win-in-2025/",
             # "https://www.metaculus.com/questions/35444/how-many-movies-will-be-new-on-netflixs-top-10-movies-list-for-the-week-ending-march-2-2025/",
